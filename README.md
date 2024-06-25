@@ -1,29 +1,29 @@
-# Project structure__
-/project-root__
-│__
-├── /assistants__
-│   ├── __init__.py__
-│   ├── openai_assistant.py__
-│   └── anthropic_assistant.py__
-│__
-├── /agents__
-│   ├── __init__.py__
-│   ├── agent_base.py__
-│   └── agent_manager.py__
-│__
-├── /rag_functionality__
-│   ├── __init__.py__
-│   ├── retriever.py__
-│   ├── generator.py__
-│   ├── rag_pipeline.py__
-│   └── utils.py__
-│__
-├── /prompts__
-│   ├── __init__.py__
-│   ├── prompt_templates.py__
-│   ├── prompt_builder.py__
-│   └── examples.py__
-│__
-├── .gitignore__
-├── README.md__
-└── requirements.txt__
+# Project structure\
+/project-root\
+│\
+├── /assistants\
+│   ├── __init__.py\
+│   ├── openai_assistant.py\
+│   └── anthropic_assistant.py\
+│\
+├── /agents\
+│   ├── __init__.py\
+│   ├── agent_base.py\
+│   └── agent_manager.py\
+│\
+├── /rag_functionality\
+│   ├── __init__.py\
+│   ├── retriever.py\
+│   ├── generator.py\
+│   ├── rag_pipeline.py\
+│   └── utils.py\
+│\
+├── /prompts\
+│   ├── __init__.py\
+│   ├── prompt_templates.py\
+│   ├── prompt_builder.py\
+│   └── examples.py\
+│\
+├── .gitignore\
+├── README.md\
+└── requirements.txt\
