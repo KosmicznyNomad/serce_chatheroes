@@ -1,5 +1,7 @@
 # Project structure
+
 /project-root
+
 │
 
 ├── /assistants
@@ -25,31 +27,17 @@
 ├── /rag_functionality
 
 │   ├── __init__.py
-
 │   ├── retriever.py
-
 │   ├── generator.py
-
 │   ├── rag_pipeline.py
-
 │   └── utils.py
-
 │
-
 ├── /prompts
-
 │   ├── __init__.py
-
 │   ├── prompt_templates.py
-
 │   ├── prompt_builder.py
-
 │   └── examples.py
-
 │
-
 ├── .gitignore
-
 ├── README.md
-
 └── requirements.txt
