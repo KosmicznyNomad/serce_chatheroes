@@ -46,8 +46,9 @@ The project is organized as follows:
 
 1. Clone the repository:
 
-'''bashgit clone https://github.com/yourusername/ai-assistant-project.git'''
-cd ai-assistant-project
+'''bash
+git clone https://github.com/yourusername/ai-assistant-project.git
+cd ai-assistant-project'''
 
 2. Create a virtual environment:
 
