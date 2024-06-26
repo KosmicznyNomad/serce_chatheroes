@@ -28,9 +28,9 @@ class OpenAIAssistant:
             return "Error: No user message to respond to"
         
         if stream:
-            return self._get_streamed_response
+            return self._get_streamed_response()
         else:
-            return self._get_non_streamed_response
+            return self._get_non_streamed_response()
     
     def _get_non_streamed_response(self) -> str:
         response = self.client.chat.completions.create(
