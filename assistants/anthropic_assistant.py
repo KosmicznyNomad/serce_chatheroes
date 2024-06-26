@@ -45,7 +45,7 @@ class AnthropicAssistant:
     def _get_streamed_response(self) -> str:
         full_response = ""
         with self.client.messages.stream(
-            model="claude-3-5-sonnet@20240620",
+            model="claude-3-5-sonnet-20240620",
             messages=self.messages,
             max_tokens=self.max_tokens,
             temperature=self.temperature,
