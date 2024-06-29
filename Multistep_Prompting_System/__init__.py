@@ -29,33 +29,33 @@ def multistep_prompting(query: str, dzial: str) -> str:
 
 def create_gui():
     sg.theme('LightBlue2')
-     knowledge_base = load_knowledge_base('knowledge_base.json')
-        dzialy = [dzial["nazwa"] for dzial in knowledge_base.get("dzialy", [])]
+    knowledge_base = load_knowledge_base('knowledge_base.json')
+    dzialy = [dzial["nazwa"] for dzial in knowledge_base.get("dzialy", [])]
 
-        layout = [
-            [sg.Text('Wybierz dział:')],
-            [sg.Combo(dzialy, key='-DZIAL-', default_value=dzialy[0] if dzialy else '', readonly=True)],
-            [sg.Text('Wprowadź swoje pytanie:')],
-            [sg.InputText(key='-QUERY-', size=(50, 1))],
-            [sg.Button('Zapytaj', bind_return_key=True), sg.Button('Wyjście')],
-            [sg.Multiline(size=(50, 10), key='-OUTPUT-', disabled=True)]
+    layout = [
+        [sg.Text('Wybierz dział:')],
+        [sg.Combo(dzialy, key='-DZIAL-', default_value=dzialy[0] if dzialy else '', readonly=True)],
+        [sg.Text('Wprowadź swoje pytanie:')],
+        [sg.InputText(key='-QUERY-', size=(50, 1))],
+        [sg.Button('Zapytaj', bind_return_key=True), sg.Button('Wyjście')],
+        [sg.Multiline(size=(50, 10), key='-OUTPUT-', disabled=True)]
         ]
 
-        window = sg.Window('System Multistep Prompting - Bot Edukacyjny', layout)
+    window = sg.Window('System Multistep Prompting - Bot Edukacyjny', layout)
 
-        while True:
-            event, values = window.read()
-            if event == sg.WINDOW_CLOSED or event == 'Wyjście':
-                break
-            if event == 'Zapytaj':
-                query = values['-QUERY-']
-                dzial = values['-DZIAL-']
-                window['-OUTPUT-'].update('Przetwarzanie pytania...')
-                try:
-                    result = multistep_prompting(query, dzial)
-                    window['-OUTPUT-'].update(result)
-                except Exception as e:
-                    window['-OUTPUT-'].update(f"Wystąpił błąd: {str(e)}")
+    while True:
+        event, values = window.read()
+        if event == sg.WINDOW_CLOSED or event == 'Wyjście':
+            break
+        if event == 'Zapytaj':
+            query = values['-QUERY-']
+            dzial = values['-DZIAL-']
+            window['-OUTPUT-'].update('Przetwarzanie pytania...')
+            try:
+                result = multistep_prompting(query, dzial)
+                window['-OUTPUT-'].update(result)
+            except Exception as e:
+                window['-OUTPUT-'].update(f"Wystąpił błąd: {str(e)}")
 
         window.close()
 
