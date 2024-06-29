@@ -1,0 +1,21 @@
+modules = ["python-3.12"]
+
+[nix]
+channel = "stable-23_11"
+
+[env]
+ANTHROPIC_API_KEY = "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"
+
+[interpreter]
+command = [
+    "python3",
+    "-m",
+    "poetry",
+    "run",
+    "python",
+    "Multistep_Prompting_System/init__.py"
+]
+
+[deployment]
+run = ["python3", "Multistep_Prompting_System/init__.py"]
+deploymentTarget = "cloudrun"
