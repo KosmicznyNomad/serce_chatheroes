@@ -7,8 +7,8 @@ from typing import Dict, Any
 import PySimpleGUI as sg
 import anthropic
 
-from .agent_manager import AgentManager
-from .agent_base import BaseAgent
+from agent_manager import AgentManager
+from agent_base import BaseAgent
 
 __all__ = ['AgentManager', 'BaseAgent']
 __version__ = "1.0.0"

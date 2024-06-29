@@ -1,6 +1,6 @@
 import json
 from typing import Dict, Any
-from .agent_base import BaseAgent
+from agent_base import BaseAgent
 
 class AgentManager(BaseAgent):
     def __init__(self):
