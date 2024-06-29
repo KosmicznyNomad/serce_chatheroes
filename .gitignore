@@ -2,11 +2,12 @@
 venv/
 
 # Python bytecode
-__pycache__/
+**pycache**/
 *.py[cod]
 
 # Environment variables
 .env
+*.env
 
 # IDE settings
 .vscode/
@@ -15,3 +16,20 @@ __pycache__/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Replit specific
+.replit
+replit.nix
+.config/
+
+# Potential config files
+config.ini
+*.config
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
