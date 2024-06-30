@@ -5,7 +5,7 @@ class BaseAgent:
     def __init__(self):
         self.client = anthropic.Client(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-    def generate_response(self, prompt: str, model: str = "claude-3-5-sonnet-202406209") -> str:
+    def generate_response(self, prompt: str, model: str = "claude-3-5-sonnet-20240620") -> str:
         try:
             response = self.client.messages.create(
                 model=model,
