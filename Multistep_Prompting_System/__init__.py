@@ -2,8 +2,8 @@ import PySimpleGUI as sg
 from typing import Dict, Any
 import json
 import os
-import anthropic
-
+import sys
+sys.path.append('.')
 from .agent_manager import AgentManager
 from .agent_base import BaseAgent
 
