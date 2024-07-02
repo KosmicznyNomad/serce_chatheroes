@@ -1,43 +1,103 @@
 {
     "dzialy": [
-      {
-        "nazwa": "Historia",
-        "tematy": [
-          {
-            "tytul": "II Wojna Światowa",
-            "tresc": "II Wojna Światowa trwała od 1939 do 1945 roku. Była największym konfliktem zbrojnym w historii, angażującym większość państw świata. Głównymi stronami konfliktu były państwa Osi (Niemcy, Włochy, Japonia) oraz Alianci (m.in. Wielka Brytania, USA, ZSRR)."
-          },
-          {
-            "tytul": "Rewolucja Francuska",
-            "tresc": "Rewolucja Francuska miała miejsce w latach 1789-1799. Doprowadziła do obalenia monarchii absolutnej we Francji i ustanowienia republiki. Kluczowe wydarzenia to zburzenie Bastylii (14 lipca 1789) oraz uchwalenie Deklaracji Praw Człowieka i Obywatela."
-          }
-        ]
-      },
-      {
-        "nazwa": "Geografia",
-        "tematy": [
-          {
-            "tytul": "Największe państwa świata",
-            "tresc": "Największe państwa świata pod względem powierzchni to: 1. Rosja, 2. Kanada, 3. Chiny, 4. Stany Zjednoczone, 5. Brazylia. Rosja zajmuje obszar ponad 17 mln km², co stanowi około 11% powierzchni lądowej Ziemi."
-          },
-          {
-            "tytul": "Najdłuższe rzeki świata",
-            "tresc": "Najdłuższe rzeki świata to: 1. Nil (Afryka) - 6650 km, 2. Amazonka (Ameryka Południowa) - 6400 km, 3. Jangcy (Azja) - 6300 km, 4. Missisipi-Missouri (Ameryka Północna) - 6275 km, 5. Jenisej (Azja) - 5539 km."
-          }
-        ]
-      },
-      {
-        "nazwa": "Nauka",
-        "tematy": [
-          {
-            "tytul": "Teoria względności",
-            "tresc": "Teoria względności to teoria fizyczna stworzona przez Alberta Einsteina. Składa się z dwóch części: szczególnej teorii względności (1905) i ogólnej teorii względności (1915). Teoria ta zrewolucjonizowała nasze rozumienie czasu, przestrzeni, grawitacji i struktury Wszechświata."
-          },
-          {
-            "tytul": "Układ okresowy pierwiastków",
-            "tresc": "Układ okresowy pierwiastków to graficzne przedstawienie wszystkich znanych pierwiastków chemicznych, uporządkowanych według rosnącej liczby atomowej. Został opracowany przez Dmitrija Mendelejewa w 1869 roku. Obecnie zawiera 118 potwierdzonych pierwiastków."
-          }
-        ]
-      }
+        {
+            "nazwa": "Składnia zdań",
+            "opis": "Opis dla Składnia zdań",
+            "tematy": [
+                {
+                    "nazwa": "Składnia zdań",
+                    "wymagania": [
+                        "Znajomość klasyfikacji zdań ze względu na cel wypowiedzi",
+                        "Opanowanie struktury zdań oznajmujących, pytających, rozkazujących i wykrzyknikowych"
+                    ],
+                    "niewymagane": [
+                        "Znajomość zdań złożonych i ich typów"
+                    ]
+                }
+            ]
+        },
+        {
+            "nazwa": "Fleksja rzeczownika",
+            "opis": "Opis dla Fleksja rzeczownika",
+            "tematy": [
+                {
+                    "nazwa": "Fleksja rzeczownika",
+                    "wymagania": [
+                        "Rozumienie kategorii liczby w odniesieniu do rzeczowników",
+                        "Umiejętność rozróżniania i stosowania form liczby pojedynczej i mnogiej",
+                        "Znajomość pojęć singularia tantum i pluralia tantum"
+                    ],
+                    "niewymagane": [
+                        "Pełna odmiana rzeczowników przez przypadki"
+                    ]
+                }
+            ]
+        },
+        {
+            "nazwa": "Ortografia - pisownia 'ó' i 'u'",
+            "opis": "Opis dla Ortografia - pisownia 'ó' i 'u'",
+            "tematy": [
+                {
+                    "nazwa": "Ortografia - pisownia 'ó' i 'u'",
+                    "wymagania": [
+                        "Znajomość zasady wymiany 'ó' na 'o'",
+                        "Rozumienie pojęcia 'ó' niewymiennego",
+                        "Umiejętność identyfikacji wyjątków od reguły"
+                    ],
+                    "niewymagane": [
+                        "Pełna znajomość wszystkich wyrazów z 'ó' niewymiennym"
+                    ]
+                }
+            ]
+        },
+        {
+            "nazwa": "Części mowy",
+            "opis": "Opis dla Części mowy",
+            "tematy": [
+                {
+                    "nazwa": "Części mowy",
+                    "wymagania": [
+                        "Rozpoznawanie podstawowych części mowy: rzeczowników, przymiotników, czasowników i przysłówków",
+                        "Umiejętność określania podstawowych form fleksyjnych wymienionych części mowy",
+                        "Rozumienie podziału na odmienne i nieodmienne części mowy"
+                    ],
+                    "niewymagane": [
+                        "Znajomość wszystkich kategorii gramatycznych poszczególnych części mowy"
+                    ]
+                }
+            ]
+        },
+        {
+            "nazwa": "Ortografia - pisownia 'rz'",
+            "opis": "Opis dla Ortografia - pisownia 'rz'",
+            "tematy": [
+                {
+                    "nazwa": "Ortografia - pisownia 'rz'",
+                    "wymagania": [
+                        "Znajomość zasady wymienności 'rz' na 'r'",
+                        "Opanowanie reguły pisowni 'rz' po spółgłoskach"
+                    ],
+                    "niewymagane": [
+                        "Pełna znajomość wszystkich wyjątków od reguły"
+                    ]
+                }
+            ]
+        },
+        {
+            "nazwa": "Zasady ortograficzne i interpunkcyjne",
+            "opis": "Opis dla Zasady ortograficzne i interpunkcyjne",
+            "tematy": [
+                {
+                    "nazwa": "Zasady ortograficzne i interpunkcyjne",
+                    "wymagania": [
+                        "Znajomość podstawowych zasad pisowni wielką literą",
+                        "Opanowanie pisowni połączeń literowych reprezentujących samogłoski nosowe",
+                        "Umiejętność stosowania podstawowych znaków interpunkcyjnych",
+                        "Znajomość zasady pisowni 'nie' z różnymi częściami mowy"
+                    ],
+                    "niewymagane": []
+                }
+            ]
+        }
     ]
-  }
+}
