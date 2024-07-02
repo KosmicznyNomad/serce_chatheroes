@@ -18,12 +18,7 @@ class AgentManager(BaseAgent):
         if self.prompts is None or not self.prompts.get('dzialy'):
             raise ValueError("Nie udało się załadować poprawnych danych z pliku JSON")
         
-        api_key = os.environ.get('ANTHROPIC_API_KEY')
-        if not api_key:
-            raise ValueError("Brak klucza API Anthropic w zmiennych środowiskowych")
-        self.client = anthropic.Anthropic(api_key=api_key)
-        logger.info("Klucz API Anthropic załadowany pomyślnie")
-        self.default_model = "claude-3-sonnet-20240229"  # Dodano definicję default_model
+        self.initialize_anthropic_client()
 
     def load_prompts(self, file_path: str) -> Optional[Dict[str, Any]]:
         logger.info(f"Próba otwarcia pliku: {file_path}")
@@ -104,7 +99,11 @@ class AgentManager(BaseAgent):
         return True
 
     def process_query(self, query: str, dzial_info: Dict[str, Any]) -> str:
-        return self.multistep_prompting(query, dzial_info)
+        try:
+            return self.multistep_prompting(query, dzial_info)
+        except Exception as e:
+            logger.error(f"Wystąpił błąd podczas przetwarzania zapytania: {str(e)}", exc_info=True)
+            return f"Przepraszam, wystąpił nieoczekiwany błąd podczas przetwarzania Twojego pytania. Szczegóły błędu: {str(e)}"
 
     def multistep_prompting(self, query: str, dzial_info: Dict[str, Any]) -> str:
         try:
@@ -121,11 +120,6 @@ class AgentManager(BaseAgent):
             followup_query = f"Na podstawie odpowiedzi: {initial_response}, przetwórz odpowiedź na pytanie: {query}"
             followup_response = self._process_query(followup_query, dzial_info, step="followup", initial_response=initial_response)
 
-            # Upewnij się, że followup_response nie jest puste
-            if not followup_response:
-                logger.error("Otrzymano pustą odpowiedź w drugim kroku promptowania")
-                return "Przepraszam, wystąpił błąd podczas przetwarzania Twojego pytania."
-
             final_response = f"Pytanie ucznia: {query}\n\nOdpowiedź: {followup_response}"
             return final_response
         except RetryError as e:
@@ -138,12 +132,12 @@ class AgentManager(BaseAgent):
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
     def _process_query(self, query: str, dzial_info: Dict[str, Any], step: str, initial_response: str = "") -> str:
         try:
+            logger.info(f"Rozpoczęcie przetwarzania zapytania. Krok: {step}")
             if not dzial_info:
                 logger.error("Brak informacji o dziale")
                 return "Przepraszam, ale nie mam dostępu do informacji o dziale. Nie mogę odpowiedzieć na Twoje pytanie."
 
             if step == "initial":
-                # Pierwszy krok: odpowiedź na podstawie bazy wiedzy
                 prompt = f"""
                 Jako nauczyciel z wieloletnim doświadczeniem, wypisz kluczowe informacje z programu szkolnego, które są wymagane do omówienia tego działu. Uwzględnij ciekawostkę oraz kluczowe dane. 
 
@@ -157,7 +151,6 @@ class AgentManager(BaseAgent):
                 Odpowiedź:
                 """
             elif step == "followup":
-                # Drugi krok: stylizowanie odpowiedzi na Mickiewicza
                 prompt = f"""
                 Zamień odpowiedź z pierwszego kroku w zrozumiałą odpowiedź na pytanie ucznia. Wykorzystaj techniki prezentowania informacji najlepszych nauczycieli, którzy tłumaczą materiał za pomocą zrozumiałych analogii. Pisz w pierwszej osobie jako Adam Mickiewicz, poeta, który korzysta z współczesnego słownictwa przystępnego dla dyslektyków. Pisz tekst w formie pierwszoosobowej. Skorzystaj miejscami z humoru. 
         
@@ -170,15 +163,10 @@ class AgentManager(BaseAgent):
                 logger.error(f"Nieznany krok: {step}")
                 return "Przepraszam, wystąpił błąd w przetwarzaniu zapytania."
 
-            response = self.generate_response(prompt, model=self.default_model, original_query=query)
-            
-            # Dodaj logowanie odpowiedzi
-            logger.info(f"Odpowiedź dla kroku {step}: {response}")
-            
+            logger.info(f"Przygotowany prompt: {prompt}")
+            response = self.generate_response(prompt, model="claude-3-sonnet-20240229", original_query=query)
+            logger.info(f"Otrzymana odpowiedź: {response}")
             return response
-        except KeyError as e:
-            logger.error(f"Wystąpił błąd KeyError w _process_query: {str(e)}", exc_info=True)
-            return "Przepraszam, wystąpił błąd w przetwarzaniu danych. Proszę spróbować ponownie."
         except Exception as e:
             logger.error(f"Wystąpił nieoczekiwany błąd w _process_query: {str(e)}", exc_info=True)
             return "Przepraszam, wystąpił nieoczekiwany błąd. Proszę spróbować ponownie później."
@@ -205,7 +193,7 @@ class AgentManager(BaseAgent):
                 messages=[
                     {"role": "user", "content": prompt}
                 ],
-                timeout=30  # Dodano timeout
+                timeout=30
             )
             logger.info("Odpowiedź otrzymana pomyślnie")
             
@@ -213,29 +201,15 @@ class AgentManager(BaseAgent):
             logger.info(f"Pełna odpowiedź API: {response}")
 
             if not response:
-                logger.error("Otrzymano pustą odpowiedź od API")
-                return "Przepraszam, wystąpił błąd podczas generowania odpowiedzi."
-
-            if not isinstance(response, anthropic.types.message.Message):
-                logger.error(f"Nieoczekiwany format odpowiedzi: {type(response)}")
-                return "Przepraszam, wystąpił błąd podczas przetwarzania odpowiedzi."
+                raise ValueError("Otrzymano pustą odpowiedź od API")
 
             if not response.content:
-                logger.error("Brak zawartości w odpowiedzi API")
-                return "Przepraszam, otrzymano pustą odpowiedź."
+                raise ValueError("Odpowiedź API nie zawiera treści")
 
-            if not isinstance(response.content, list) or len(response.content) == 0:
-                logger.error(f"Nieoczekiwana struktura 'content': {response.content}")
-                return "Przepraszam, wystąpił błąd w formacie odpowiedzi."
-
-            if not hasattr(response.content[0], 'text'):
-                logger.error("Brak atrybutu 'text' w pierwszym elemencie 'content'")
-                return "Przepraszam, nie udało się odczytać odpowiedzi."
-
-            answer = response.content[0].text
+            answer = response.content[0].text if response.content[0].text else ""
+            
             if not answer:
-                logger.error("Otrzymano pustą odpowiedź tekstową")
-                return "Przepraszam, otrzymano pustą odpowiedź tekstową."
+                raise ValueError("Odpowiedź API nie zawiera tekstu")
 
             return answer
         except anthropic.APIError as e:
@@ -244,10 +218,10 @@ class AgentManager(BaseAgent):
                 logger.warning(f"Model {model} nie został znaleziony. Próba użycia modelu domyślnego.")
                 if model != self.default_model:
                     return self.generate_response(prompt, self.default_model, original_query)
-            return f"Przepraszam, wystąpił błąd API: {str(e)}"
+            raise
         except Exception as e:
             logger.error(f"Nieoczekiwany błąd w generate_response: {e}", exc_info=True)
-            return f"Przepraszam, wystąpił nieoczekiwany błąd: {str(e)}"
+            raise
 
     def change_default_model(self, new_model: str):
         self.default_model = new_model
