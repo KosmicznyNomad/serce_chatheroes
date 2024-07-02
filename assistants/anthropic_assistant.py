@@ -9,16 +9,17 @@ anthropic_api_key = os.getenv('ANTHROPIC_API_KEY')
 anthropic = Anthropic(api_key=anthropic_api_key)
 
 class AnthropicAssistant:
-    def __init__(self, max_tokens: int=1024, temperature: float=0.2, system_prompt: str="Jesteś pomocnym asystentem. Masz dostęp do narzędzi."):
+    def __init__(self, max_tokens: int=1024, temperature: float=0.2, system_prompt: str="Jesteś pomocnym asystentem. Masz dostęp do narzędzi.", tool_use: bool=False):
         self.client = anthropic
         self.messages = []
         self.max_tokens = max_tokens
         self.temperature = temperature
         self.system_prompt = system_prompt
+        self.tool_use = tool_use
         self.tools = [
         {
             "name": "baza_wiedzy",
-            "description": "Uzyskaj dostęp do bazy wiedzy, aby zdobyć informacje na temat poruszony przez użytkownika. Jeśli znasz odpowiedź na pytanie, nie używaj bazy wiedzy.",
+            "description": "Uzyskaj dostęp do bazy wiedzy, aby zdobyć informacje na temat poruszony przez użytkownika. Jeśli znasz odpowiedź na pytanie, nie używaj bazy wiedzy. Jeśli nie znasz, musisz użyć bazy wiedzy..",
             "input_schema": {
                 "type": "object",
                 "properties": {
@@ -66,28 +67,27 @@ class AnthropicAssistant:
 
 
     def _get_non_streamed_response(self) -> str:
-        response = self.client.messages.create(
-            model="claude-3-5-sonnet-20240620",
-            messages=self.messages,
-            max_tokens=self.max_tokens,
-            temperature=self.temperature,
-            system=self.system_prompt,
-            tools=self.tools,
-            tool_choice={"type": "auto"}
-        )
-        if response.stop_reason == "tool_use":
+        kwargs = {
+            "model": "claude-3-5-sonnet-20240620",
+            "messages": self.messages,
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "system": self.system_prompt,
+        }
+
+        if self.tool_use:
+            print("Tool use is True")
+            kwargs["tools"] = self.tools
+            kwargs["tool_choice"] = {"type": "auto"}
+
+        print(kwargs)
+        response = self.client.messages.create(**kwargs)
+
+        if self.tool_use and response.stop_reason == "tool_use":
             self._handle_tool_use(response.content[-1])
-            response = self.client.messages.create(
-                model="claude-3-5-sonnet-20240620",
-                messages=self.messages,
-                max_tokens=self.max_tokens,
-                temperature=self.temperature,
-                system=self.system_prompt,
-                tools=self.tools
-            )
-            self.messages.append({"role": "assistant", "content": response.content[0].text})
-            return response.content[0].text
-        elif response.stop_reason == "end_turn":
+            response = self.client.messages.create(**kwargs)
+        
+        if response.stop_reason == "end_turn":
             self.messages.append({"role": "assistant", "content": response.content[0].text})
             return response.content[0].text
 
