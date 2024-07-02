@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 class BaseAgent:
     def __init__(self):
+<<<<<<< HEAD
         # Załaduj zmienne środowiskowe z pliku .env
         load_dotenv()
         
@@ -27,6 +28,11 @@ class BaseAgent:
     @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
     def generate_response(self, prompt: str, model: str = None) -> str:
         model = model or self.default_model
+=======
+        self.client = anthropic.Client(api_key=os.getenv("ANTHROPIC_API_KEY"))
+
+    def generate_response(self, prompt: str, model: str = "claude-3-5-sonnet-20240620") -> str:
+>>>>>>> 3677e640d95ba8db0924798d0c693a54531e515c
         try:
             logger.info(f"Wysyłanie zapytania do modelu: {model}")
             response = self.client.messages.create(
