@@ -1,0 +1,43 @@
+{
+    "dzialy": [
+      {
+        "nazwa": "Historia",
+        "tematy": [
+          {
+            "tytul": "II Wojna Światowa",
+            "tresc": "II Wojna Światowa trwała od 1939 do 1945 roku. Była największym konfliktem zbrojnym w historii, angażującym większość państw świata. Głównymi stronami konfliktu były państwa Osi (Niemcy, Włochy, Japonia) oraz Alianci (m.in. Wielka Brytania, USA, ZSRR)."
+          },
+          {
+            "tytul": "Rewolucja Francuska",
+            "tresc": "Rewolucja Francuska miała miejsce w latach 1789-1799. Doprowadziła do obalenia monarchii absolutnej we Francji i ustanowienia republiki. Kluczowe wydarzenia to zburzenie Bastylii (14 lipca 1789) oraz uchwalenie Deklaracji Praw Człowieka i Obywatela."
+          }
+        ]
+      },
+      {
+        "nazwa": "Geografia",
+        "tematy": [
+          {
+            "tytul": "Największe państwa świata",
+            "tresc": "Największe państwa świata pod względem powierzchni to: 1. Rosja, 2. Kanada, 3. Chiny, 4. Stany Zjednoczone, 5. Brazylia. Rosja zajmuje obszar ponad 17 mln km², co stanowi około 11% powierzchni lądowej Ziemi."
+          },
+          {
+            "tytul": "Najdłuższe rzeki świata",
+            "tresc": "Najdłuższe rzeki świata to: 1. Nil (Afryka) - 6650 km, 2. Amazonka (Ameryka Południowa) - 6400 km, 3. Jangcy (Azja) - 6300 km, 4. Missisipi-Missouri (Ameryka Północna) - 6275 km, 5. Jenisej (Azja) - 5539 km."
+          }
+        ]
+      },
+      {
+        "nazwa": "Nauka",
+        "tematy": [
+          {
+            "tytul": "Teoria względności",
+            "tresc": "Teoria względności to teoria fizyczna stworzona przez Alberta Einsteina. Składa się z dwóch części: szczególnej teorii względności (1905) i ogólnej teorii względności (1915). Teoria ta zrewolucjonizowała nasze rozumienie czasu, przestrzeni, grawitacji i struktury Wszechświata."
+          },
+          {
+            "tytul": "Układ okresowy pierwiastków",
+            "tresc": "Układ okresowy pierwiastków to graficzne przedstawienie wszystkich znanych pierwiastków chemicznych, uporządkowanych według rosnącej liczby atomowej. Został opracowany przez Dmitrija Mendelejewa w 1869 roku. Obecnie zawiera 118 potwierdzonych pierwiastków."
+          }
+        ]
+      }
+    ]
+  }
