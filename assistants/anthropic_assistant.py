@@ -76,11 +76,9 @@ class AnthropicAssistant:
         }
 
         if self.tool_use:
-            print("Tool use is True")
             kwargs["tools"] = self.tools
             kwargs["tool_choice"] = {"type": "auto"}
 
-        print(kwargs)
         response = self.client.messages.create(**kwargs)
 
         if self.tool_use and response.stop_reason == "tool_use":
