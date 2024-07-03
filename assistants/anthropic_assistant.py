@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from anthropic import Anthropic
+import json
 
 load_dotenv(dotenv_path='../.env')
 
@@ -91,17 +92,56 @@ class AnthropicAssistant:
 
     def _get_streamed_response(self) -> str:
         full_response = ""
-        with self.client.messages.stream(
-            model="claude-3-5-sonnet-20240620",
+        kwargs = {
+            "model": "claude-3-sonnet-20240229",
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "system": self.system_prompt,
+        }
+
+        if self.tool_use:
+            kwargs["tools"] = self.tools
+            kwargs["tool_choice"] = {"type": "auto"}
+
+        with self.client.messages.create(
             messages=self.messages,
-            max_tokens=self.max_tokens,
-            temperature=self.temperature,
-            system=self.system_prompt
+            stream=True,
+            **kwargs
         ) as stream:
-            for text in stream.text_stream:
-                full_response += text
-                yield text
-        
+            current_tool_use = None
+            tool_input_json = ""
+
+            for event in stream:
+                if event.type == "content_block_start":
+                    if event.content_block.type == "tool_use":
+                        current_tool_use = event.content_block
+                        tool_input_json = ""
+                elif event.type == "content_block_delta":
+                    if current_tool_use and event.delta.type == "input_json_delta":
+                        tool_input_json += event.delta.partial_json
+                    elif event.delta.type == "text_delta":
+                        text = event.delta.text
+                        full_response += text
+                        yield text
+                elif event.type == "content_block_stop":
+                    if current_tool_use:
+                        try:
+                            tool_input = json.loads(tool_input_json)
+                            current_tool_use.input = tool_input
+                            self._handle_tool_use(current_tool_use)
+                            with self.client.messages.stream(
+                                messages=self.messages,
+                                **kwargs
+                            ) as stream:
+                                for chunk in stream.text_stream:
+                                    yield chunk
+                                    full_response += chunk
+                        except json.JSONDecodeError:
+                            print(f"Error decoding tool input JSON: {tool_input_json}")
+                        finally:
+                            current_tool_use = None
+                            tool_input_json = ""
+
         self.messages.append({"role": "assistant", "content": full_response})
         return full_response
     
