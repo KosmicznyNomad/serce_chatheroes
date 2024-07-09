@@ -44,7 +44,7 @@ class AgentManager():
         followup_query = f"Na podstawie odpowiedzi: {initial_response}, przetwórz odpowiedź na pytanie: {query}"
         followup_response = self._process_query(followup_query, dzial_info, step="followup", initial_response=initial_response)
 
-        final_response = f"Pytanie ucznia: {query}\n\nOdpowiedź: {followup_response}"
+        final_response = followup_response
         return final_response
         
 
