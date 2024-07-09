@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Adam Mickiewicz</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #chat-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #user-input {
+            width: 70%;
+            padding: 5px;
+        }
+        #send-button {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat with Adam Mickiewicz</h1>
+    <select id="dzial-select"></select>
+    <div id="chat-container"></div>
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <button id="send-button">Send</button>
+
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const dzialSelect = document.getElementById('dzial-select');
+
+        function addMessage(role, content) {
+            const messageElement = document.createElement('p');
+            messageElement.innerHTML = `<strong>${role}:</strong> ${content}`;
+            chatContainer.appendChild(messageElement);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function loadDzialy() {
+            try {
+                const response = await axios.get('http://localhost:5000/api/dzialy');
+                const dzialy = response.data.dzialy;
+                dzialy.forEach(dzial => {
+                    const option = document.createElement('option');
+                    option.value = dzial;
+                    option.textContent = dzial;
+                    dzialSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading dzialy:', error);
+            }
+        }
+
+        async function sendMessage() {
+        const query = userInput.value.trim();
+        const dzial = dzialSelect.value;
+        if (query && dzial) {
+            addMessage('You', query);
+            userInput.value = '';
+
+            try {
+                console.log('Sending request:', { query, dzial });
+                const response = await axios.post('http://localhost:5000/api/chat', { query, dzial });
+                console.log('Received response:', response.data);
+                addMessage('Adam Mickiewicz', response.data.response);
+            } catch (error) {
+                console.error('Error sending message:', error);
+                console.error('Error response:', error.response);
+                addMessage('System', `An error occurred: ${error.response?.data?.error || error.message}`);
+            }
+        }
+    }
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        loadDzialy();
+    </script>
+</body>
+</html>
