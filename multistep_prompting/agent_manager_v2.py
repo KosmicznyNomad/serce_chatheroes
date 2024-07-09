@@ -86,6 +86,3 @@ class AgentManager():
             for non_req in topic.get('niewymagane', []):
                 formatted_topics += f"    * {non_req}\n"
         return formatted_topics
-
-    def change_default_model(self, new_model: str):
-        self.default_model = new_model
